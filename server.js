@@ -5,37 +5,49 @@
 var RSS         = require('rss'),
     FeedParser  = require('feedparser'),
     request     = require('request'),
-    req         = request('https://github.com/DuaneOBrien/growlr/commits/master.atom'),
-    feedparser  = new FeedParser([{}]),
-    ArticleCollection = require('./ArticleCollection');
+    fs          = require('fs'),
+    ArticleCollection = require('./ArticleCollection'),
+    feedCount = 0,
+    feedParser,
+    req;
 
-req.on('error', function (error) {
-    // handle any request errors
-    console.log(error);
-});
+function handleError(error) {
+    throw error;
+}
 
-req.on('response', function (res) {
-    var stream = this;
-
-    if (res.statusCode !== 200) {
-        return this.emit('error', new Error('Bad status code'));
-    }
-
-    stream.pipe(feedparser);
-});
-
-feedparser.on('error', function (error) {
-    // always handle errors
-    console.log(error);
-});
-
-feedparser.on('readable', function () {
+function handleStreamReadable() {
     var stream  = this,
         meta    = this.meta,
         item;
-    
+
     while (null !== (item = stream.read())) {
         ArticleCollection.addArticle(item.title, (item.summary || item.description), item.link, item.pubDate);
     }
-    console.log(ArticleCollection.getArticles());
+}
+
+function handleFeedEnd() {
+    feedCount -= 1;
+    if (feedCount <= 0) {
+        console.log(ArticleCollection.getArticles());
+    }
+}
+
+fs.readFile('feeds.json', {encoding: 'UTF8'}, function (error, data) {
+    if (error) {
+        throw error;
+    }
+    var feeds = JSON.parse(data),
+        feedTitle;
+    feedCount = Object.keys(feeds).length;
+    for (feedTitle in feeds) {
+        if (feeds.hasOwnProperty(feedTitle)) {
+            feedParser = new FeedParser([{}]);
+            feedParser.on('error', handleError);
+            feedParser.on('readable', handleStreamReadable);
+            feedParser.on('end', handleFeedEnd);
+            request(feeds[feedTitle].url).pipe(feedParser);
+        }
+    }
 });
+
+
