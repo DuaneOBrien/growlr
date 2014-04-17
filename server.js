@@ -16,6 +16,7 @@ function handleError(error) {
 }
 
 function handleStreamReadable() {
+    /* jshint validthis:true */
     var stream  = this,
         meta    = this.meta,
         item;
