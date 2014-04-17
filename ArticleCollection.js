@@ -8,8 +8,8 @@ function init() {
 }
 
 function sortByDateDesc(a, b) {
-    var aComp = Date.parse(a.pubDate),
-        bComp = Date.parse(b.pubDate);
+    var aComp = Date.parse(a.date),
+        bComp = Date.parse(b.date);
     if (aComp < bComp) {
         return 1;
     }
@@ -23,8 +23,8 @@ function getArticles() {
     return articles.sort(sortByDateDesc);
 }
 
-function addArticle(title, summary, link, pubDate) {
-    return articles.push({title: title, summary: summary, link: link, pubDate: pubDate});
+function addArticle(title, description, url, date) {
+    return articles.push({title: title, description: description, url: url, date: new Date(date).toString()});
 }
 
 init();
