@@ -55,7 +55,7 @@ function generateRollup(articles) {
             });
         }
     }
-    outputXML = rollup.xml();
+    outputXML = rollup.xml('    ');
 }
 
 fs.readFile('feeds.json', {encoding: 'UTF8'}, function (error, data) {
