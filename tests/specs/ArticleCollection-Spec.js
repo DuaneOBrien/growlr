@@ -9,10 +9,10 @@
     describe('Exercising the Article Collection', function () {
         var testArticle,
             expectedResults = [
-            {title: 'Third Article', description: 'Third Summary', url: 'Third Link', date: 'Sun Apr 08 2012 19:56:37 GMT-0400 (EDT)'},
-            {title: 'Second Article', description: 'Second Summary', url: 'Second Link', date: 'Wed Mar 07 2012 17:56:37 GMT-0500 (EST)'},
-            {title: 'First Article', description: 'First Summary', url: 'First Link', date: 'Tue Mar 06 2012 17:56:37 GMT-0500 (EST)'}
-        ];
+                {title: 'Third Article', description: 'Third Summary', url: 'Third Link', date: 'Sun Apr 08 2012 19:56:37 GMT-0400 (EDT)'},
+                {title: 'Second Article', description: 'Second Summary', url: 'Second Link', date: 'Wed Mar 07 2012 17:56:37 GMT-0500 (EST)'},
+                {title: 'First Article', description: 'First Summary', url: 'First Link', date: 'Tue Mar 06 2012 17:56:37 GMT-0500 (EST)'}
+            ];
         beforeEach(function () {
             testArticle = expectedResults[0];
             ArticleCollection.init();
